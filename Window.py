@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import Frame, StringVar, Menu, Label, Tk
 from tkinter import ttk
 from PIL import Image, ImageTk
 from tkinter.filedialog import askopenfilename

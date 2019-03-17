@@ -1,9 +1,5 @@
 from openpyxl import load_workbook
-# from Window import *
-# from Posting import *
-# from ListItem import *
-from tkinter.filedialog import askopenfilename
-
+from tkinter.filedialog import askopenfilename, asksaveasfilename
 
 class FileService():
     def __init__(self):
@@ -11,6 +7,11 @@ class FileService():
     
     def loadFile(self):
         filename = askopenfilename()
-        # self.currentFile = DataService.openFile(filename)
         self.currentFile = load_workbook(filename)
+        print("File Loaded")
         return self.currentFile
+
+    def saveFile(self, wb):
+        filename = asksaveasfilename()
+        wb.save(filename + ".xlsx")
+        print("File Saved!")

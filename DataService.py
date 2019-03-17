@@ -2,8 +2,8 @@ from Posting import Posting
 from ListItem import ListItem
 
 class DataService():
-    # def __init__(self):
-        # self.wb = workbook
+    def __init__(self):
+        self.wb = None
 
     def printSheetTitles(self, wb):
         for sheet in wb:
@@ -31,11 +31,12 @@ class DataService():
         for i in range(1, ws.max_row):
             cell = ws.cell(i, 3)
             if (cell.value == 7003) or (cell.value == 7006) or (cell.value == 7007):
-                ws.cell(i, 9, 'Staff Costs')
+                ws.cell(i, 8, 'Staff Costs')
             if cell.value == 5032:
-                ws.cell(i, 9, 'Equipment')
+                ws.cell(i, 8, 'Equipment')
             if (cell.value == 7307) or (cell.value == 7311) or (cell.value == 7312):
-                ws.cell(i, 9, 'Travel')
+                ws.cell(i, 8, 'Travel')
+        print("Done!")
 
     def searchByNominal(self, entryList, nominalCode):
         filteredList = []

@@ -1,9 +1,7 @@
 import tkinter as tk
-from tkinter import *
-from tkinter import ttk
+from tkinter import StringVar, ttk, Menu
 from PIL import Image, ImageTk
 from tkinter.filedialog import askopenfilename
-# from tkinter import Tk               
 from tkinter import font  as tkfont
 from HomePage import HomePage
 from ProjectPage import ProjectPage
@@ -17,7 +15,6 @@ class PyExcel(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
-        # quitButton = Button(self.master, text="Quit", command=self.client_exit)
         self.currentFile = None
         self.files = []
         self.DataService = DataService()
@@ -26,7 +23,14 @@ class PyExcel(tk.Tk):
         self.nominalList = []
         self.deptList=[]
         self.tkvar = StringVar()
-        # self.init_window()
+        menu = Menu(self.master)
+        self.config(menu=menu)
+        file = Menu(menu)
+        file.add_command(label='Import File', command=FileService.loadFile)
+        file.add_command(label='Exit', command=self.client_exit)
+        menu.add_cascade(label='File', menu=file)
+        func = Menu(menu)
+        menu.add_cascade(label="Functions", menu=func)
         self.page = StringVar()
         container = tk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
@@ -37,10 +41,6 @@ class PyExcel(tk.Tk):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
-
-            # put all of the pages in the same location;
-            # the one on the top of the stacking order
-            # will be the one that is visible.
             frame.grid(row=0, column=0, sticky="nsew")
         self.show_frame("HomePage")
 
