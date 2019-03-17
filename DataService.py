@@ -14,6 +14,10 @@ class DataService():
         newRow = ws[rowno]
         return newRow
 
+    def getRowCount(self, wb, sheetName):
+        ws = wb[sheetName]
+        return ws.max_row
+
     # def importEntries(self, wb, sheetName):
     #     ws = wb[sheetName]        
     #     entryList = []
@@ -33,12 +37,12 @@ class DataService():
             if (cell.value == 7307) or (cell.value == 7311) or (cell.value == 7312):
                 ws.cell(i, 9, 'Travel')
 
-    # def searchByNominal(self, entryList, nominalCode):
-    #     filteredList = []
-    #     for item in entryList:
-    #         if item.nominalCode == nominalCode:
-    #             filteredList.append(item)
-    #     return filteredList
+    def searchByNominal(self, entryList, nominalCode):
+        filteredList = []
+        for item in entryList:
+            if item.nominalCode == nominalCode:
+                filteredList.append(item)
+        return filteredList
 
     def getList(self, ws, codeCol, nameCol):
         found = False
@@ -72,10 +76,6 @@ class DataService():
         for i in range(1, entryList.__len__()):
             newWs.cell(i, 1).value = entryList[i].nominalCode
             newWs.cell(i, 2).value = entryList[i].transValue
-
-    # def openFile(self, filename):
-    #     wb = load_workbook(filename)
-    #     return wb
 
     def sumDept(self, dept, ws):
         deptTotal = 0

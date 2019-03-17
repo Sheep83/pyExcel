@@ -3,6 +3,10 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 from tkinter.filedialog import askopenfilename
 from FileService import FileService
+from HomePage import HomePage
+from ProjectPage import ProjectPage
+from SettingsPage import SettingsPage
+from tkinter import font  as tkfont
 
 
 class Window(Frame):
@@ -16,11 +20,13 @@ class Window(Frame):
         self.deptList=[]
         self.tkvar = StringVar()
         self.init_window()
+        self.page = StringVar()
         
 
     def init_window(self):
         self.master.title("pyExcel")
-        self.pack(fill=BOTH, expand=1)
+        self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
+        # self.pack(fill=BOTH, expand=1)
         menu = Menu(self.master)
         self.master.config(menu=menu)
         file = Menu(menu)
@@ -29,8 +35,33 @@ class Window(Frame):
         menu.add_cascade(label='File', menu=file)
         func = Menu(menu)
         menu.add_cascade(label="Functions", menu=func)
-        quitButton = Button(self, text="Quit", command=self.client_exit)
-        quitButton.place(x=0, y=0)
+        self.page = "HomePage"
+        # quitButton = Button(self.master, text="Quit", command=self.client_exit)
+        # quitButton.grid(row=2, columnspan=2, padx=25, pady=25)
+        # Label(self.master, text="First").grid(row=0, pady=15)
+        # Label(self.master, text="Second").grid(row=1, pady=15)
+        # e1 = Entry(self.master)
+        # e2 = Entry(self.master)
+        # e1.grid(row=0, column=1, padx=5, pady=15)
+        # e2.grid(row=1, column=1, padx=5, pady=15)
+        # quitButton.place(x=0, y=550)
+        # self.showTxt()
+        self.frames = {}
+        for F in (HomePage, ProjectPage, SettingsPage):
+            page_name = F.__name__
+            frame = F(parent=self, controller=self)
+            self.frames[page_name] = frame
+            frame.grid(row=0, column=0, sticky="nsew")
+        self.show_frame(self.page)
+
+    def show_frame(self, page_name):
+        '''Show a frame for the given page name'''
+        frame = self.frames[page_name]
+        frame.grid(row=0, column=0, sticky="nsew")
+        frame.tkraise()
+        # Frame = self.frames[page_name]
+
+
 
     def client_exit(self):
         exit()
@@ -42,15 +73,15 @@ class Window(Frame):
     #     img.image = render
     #     img.place(x=0, y=0)
 
-    # def showTxt(self):
-    #     text = Label(self, text='PyExcel v0.1a')
-    #     text.pack()
+    def showTxt(self):
+        text = Label(self, text='PyExcel v0.1a')
+        text.pack()
 
-    # def populateMenu(self, list):
-    #     options = []
-    #     for item in list:
-    #         options.append(str(item.name))
-    #     return options
+    def populateMenu(self, list):
+        options = []
+        for item in list:
+            options.append(str(item.name))
+        return options
 
 
     # def openFile(self):
