@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import StringVar, ttk, Menu
+from tkinter import StringVar, ttk, Menu, IntVar
 from PIL import Image, ImageTk
 from tkinter.filedialog import askopenfilename
 from tkinter import font  as tkfont
@@ -23,6 +23,8 @@ class PyExcel(tk.Tk):
         # self.nominalList = None
         self.deptList = []
         self.selectedDept = StringVar()
+        self.selectedDept.set("")
+        self.deptSum = IntVar()
         menu = Menu(self.master)
         self.config(menu=menu)
         file = Menu(menu)
@@ -47,7 +49,6 @@ class PyExcel(tk.Tk):
 
     def show_frame(self, page_name):
         self.refresh()
-        '''Show a frame for the given page name'''
         frame = self.frames[page_name]
         frame.tkraise()
 
@@ -67,8 +68,6 @@ class PyExcel(tk.Tk):
             frame = F(parent=self.container, controller=self)
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="nsew")
-        # self.show_frame("HomePage")
-
 
         
     def importFile(self):
@@ -81,7 +80,6 @@ class PyExcel(tk.Tk):
         self.DataService.printSheetTitles(wb)
         print("Sheet Row Count: " + str(self.DataService.getRowCount(wb, "Sheet1")))
         self.deptList = self.DataService.getList(wb["Sheet1"], 1, 2)
-        options = self.DataService.populateMenu(self.deptList)
 
 
 if __name__ == "__main__":

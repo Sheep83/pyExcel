@@ -84,7 +84,8 @@ class DataService():
         for i in range(1, ws.max_row):
             value = ws.cell(i, 2).value
             if value == dept:
-                deptTotal += ws.cell(i, 8).value
+                deptTotal += ws.cell(i, 7).value
+        print (str(deptTotal))
         return deptTotal
 
     def populateMenu(self, list):
