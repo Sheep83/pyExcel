@@ -18,6 +18,16 @@ class DataService():
         ws = wb[sheetName]
         return ws.max_row
 
+    def getEntriesByDept(self, ws, dept):
+        entryList = []
+        for i in range (1, ws.max_row):
+            if(ws.cell(i, 2).value == dept):
+                newEntry = Posting(self.getRow(ws, i))
+                entryList.append(newEntry)
+        print(entryList.__len__())
+        return entryList
+
+
     # def importEntries(self, wb, sheetName):
     #     ws = wb[sheetName]        
     #     entryList = []
@@ -94,3 +104,13 @@ class DataService():
             for item in list:
                 options.append(str(item.name))
         return options
+
+    def sumByCat(self, cat, ws, dept):
+        catTotal = 0
+        for i in range(1, ws.max_row):
+            value = ws.cell(i, 8).value
+            deptValue = ws.cell(i,2).value
+            if (value == cat) and (deptValue == dept):
+                catTotal += ws.cell(i, 7).value
+        print (cat + " Total : " + str(catTotal))            
+        return catTotal
