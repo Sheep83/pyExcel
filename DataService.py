@@ -37,6 +37,7 @@ class DataService():
             if (cell.value == 7307) or (cell.value == 7311) or (cell.value == 7312):
                 ws.cell(i, 8, 'Travel')
         print("Done!")
+        
 
     def searchByNominal(self, entryList, nominalCode):
         filteredList = []
@@ -85,3 +86,10 @@ class DataService():
             if value == dept:
                 deptTotal += ws.cell(i, 8).value
         return deptTotal
+
+    def populateMenu(self, list):
+        options = []
+        if (list.__len__() > 0):
+            for item in list:
+                options.append(str(item.name))
+        return options

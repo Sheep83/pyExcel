@@ -19,10 +19,10 @@ class PyExcel(tk.Tk):
         self.files = []
         self.DataService = DataService()
         self.FileService = FileService()
-        self.entryList = []
-        self.nominalList = []
-        self.deptList=[]
-        self.tkvar = StringVar()
+        # self.entryList = None
+        # self.nominalList = None
+        self.deptList = []
+        self.selectedDept = StringVar()
         menu = Menu(self.master)
         self.config(menu=menu)
         file = Menu(menu)
@@ -32,20 +32,21 @@ class PyExcel(tk.Tk):
         func = Menu(menu)
         menu.add_cascade(label="Functions", menu=func)
         self.page = StringVar()
-        container = tk.Frame(self)
-        container.pack(side="top", fill="both", expand=True)
-        container.grid_rowconfigure(0, weight=1)
-        container.grid_columnconfigure(0, weight=1)
         self.frames = {}
+        self.container = tk.Frame(self)
+        self.container.pack(side="top", fill="both", expand=True)
+        self.container.grid_rowconfigure(0, weight=1)
+        self.container.grid_columnconfigure(0, weight=1)
         for F in (HomePage, ProjectPage, SettingsPage):
             page_name = F.__name__
-            frame = F(parent=container, controller=self)
+            frame = F(parent=self.container, controller=self)
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="nsew")
         self.show_frame("HomePage")
 
 
     def show_frame(self, page_name):
+        self.refresh()
         '''Show a frame for the given page name'''
         frame = self.frames[page_name]
         frame.tkraise()
@@ -54,16 +55,33 @@ class PyExcel(tk.Tk):
     def client_exit(self):
         exit()
 
+    def refresh(self):
+        self.container.destroy()
+        self.frames = {}
+        self.container = tk.Frame(self)
+        self.container.pack(side="top", fill="both", expand=True)
+        self.container.grid_rowconfigure(0, weight=1)
+        self.container.grid_columnconfigure(0, weight=1)
+        for F in (HomePage, ProjectPage, SettingsPage):
+            page_name = F.__name__
+            frame = F(parent=self.container, controller=self)
+            self.frames[page_name] = frame
+            frame.grid(row=0, column=0, sticky="nsew")
+        # self.show_frame("HomePage")
 
+
+        
     def importFile(self):
         self.currentFile = self.FileService.loadFile()
         self.files.append(self.currentFile)
-        self.getWorkbookInfo(self.currentFile)        
+        self.getWorkbookInfo(self.currentFile)
 
 
     def getWorkbookInfo(self, wb):
         self.DataService.printSheetTitles(wb)
         print("Sheet Row Count: " + str(self.DataService.getRowCount(wb, "Sheet1")))
+        self.deptList = self.DataService.getList(wb["Sheet1"], 1, 2)
+        options = self.DataService.populateMenu(self.deptList)
 
 
 if __name__ == "__main__":
