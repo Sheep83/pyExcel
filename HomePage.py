@@ -11,7 +11,7 @@ class HomePage(tk.Frame):
         button2 = tk.Button(self, text="Go to Settings", command=lambda: controller.show_frame("SettingsPage"))
         button3 = tk.Button(self, text="Import File", command=lambda: controller.importFile())
         # button3.config(height = 10, width = 10)
-        button4 = tk.Button(self, text="Analyse Sheet", command=lambda: controller.DataService.categorise(controller.currentFile["Sheet1"]))
+        button4 = tk.Button(self, text="Analyse Sheet", command=lambda: controller.DataService.categorise(controller.currentFile["Sheet1"], controller.optionsFile["ChartOfAccounts"]))
         button5 = tk.Button(self, text="Save Analysed Sheet", command=lambda: controller.FileService.saveFile(controller.currentFile))
         button1.pack()
         button2.pack()

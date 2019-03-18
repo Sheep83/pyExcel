@@ -8,6 +8,7 @@ from ProjectPage import ProjectPage
 from SettingsPage import SettingsPage
 from FileService import FileService
 from DataService import DataService
+from openpyxl import load_workbook
 
 
 class PyExcel(tk.Tk):
@@ -16,11 +17,13 @@ class PyExcel(tk.Tk):
         tk.Tk.__init__(self, *args, **kwargs)
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
         self.currentFile = None
+        # path = 'C:\Dev\Python\pyExcel\files\optionsFile.xlsx'
         self.files = []
         self.DataService = DataService()
         self.FileService = FileService()
         # self.entryList = None
-        # self.nominalList = None
+        self.optionsFile = self.FileService.loadFile()
+        self.nominalList = None
         self.deptList = []
         self.selectedDept = StringVar()
         self.selectedDept.set("")

@@ -5,18 +5,22 @@ class DataService():
     def __init__(self):
         self.wb = None
 
+
     def printSheetTitles(self, wb):
         for sheet in wb:
             print(sheet.title)
+
 
     def getRow(self, ws, rowno):
         # ws = wb[sheetName]
         newRow = ws[rowno]
         return newRow
 
+
     def getRowCount(self, wb, sheetName):
         ws = wb[sheetName]
         return ws.max_row
+
 
     def getEntriesByDept(self, ws, dept):
         entryList = []
@@ -28,24 +32,14 @@ class DataService():
         return entryList
 
 
-    # def importEntries(self, wb, sheetName):
-    #     ws = wb[sheetName]        
-    #     entryList = []
-    #     for i in range (1, ws.max_row):
-    #         newEntry = Posting(self.getRow(ws, i))
-    #         entryList.append(newEntry)
-    #     print(entryList.__len__())
-    #     return entryList
-
-    def categorise(self, ws):
+    def categorise(self, ws, options):
         for i in range(1, ws.max_row):
             cell = ws.cell(i, 3)
-            if (cell.value == 7003) or (cell.value == 7006) or (cell.value == 7007):
-                ws.cell(i, 8, 'Staff Costs')
-            if cell.value == 5032:
-                ws.cell(i, 8, 'Equipment')
-            if (cell.value == 7307) or (cell.value == 7311) or (cell.value == 7312):
-                ws.cell(i, 8, 'Travel')
+            for j in range(1, options.max_row):
+                cell2 = options.cell(j, 1)
+                if (cell.value == cell2.value):
+                    ws.cell(i, 8).value = options.cell(j, 3).value
+                    break
         print("Done!")
         
 
@@ -55,6 +49,7 @@ class DataService():
             if item.nominalCode == nominalCode:
                 filteredList.append(item)
         return filteredList
+
 
     def getList(self, ws, codeCol, nameCol):
         found = False
@@ -75,6 +70,7 @@ class DataService():
                 list.append(newItem)
         return list
 
+
     def writeList(self, wb, list, row, column, sheetname):
         newWs = wb.create_sheet(sheetname)
         i = 0
@@ -83,11 +79,13 @@ class DataService():
             newWs.cell(row + i, column + 1).value = item.name
             i += 1
 
+
     def writeEntryList(self, wb, entryList, col1, sheetname):
         newWs = wb.create_sheet(sheetname)
         for i in range(1, entryList.__len__()):
             newWs.cell(i, 1).value = entryList[i].nominalCode
             newWs.cell(i, 2).value = entryList[i].transValue
+
 
     def sumDept(self, dept, ws):
         deptTotal = 0
@@ -98,12 +96,14 @@ class DataService():
         print (str(deptTotal))
         return deptTotal
 
+
     def populateMenu(self, list):
         options = []
         if (list.__len__() > 0):
             for item in list:
                 options.append(str(item.name))
         return options
+
 
     def sumByCat(self, cat, ws, dept):
         catTotal = 0
