@@ -1,18 +1,18 @@
 from Posting import Posting
 from ListItem import ListItem
+import math
 
 class DataService():
     def __init__(self):
         self.wb = None
 
-
+    ##########Sheet Read and Write Functions#############
     def printSheetTitles(self, wb):
         for sheet in wb:
             print(sheet.title)
 
 
     def getRow(self, ws, rowno):
-        # ws = wb[sheetName]
         newRow = ws[rowno]
         return newRow
 
@@ -39,7 +39,7 @@ class DataService():
                 cell2 = options.cell(j, 1)
                 if (cell.value == cell2.value):
                     ws.cell(i, 8).value = options.cell(j, 3).value
-                    # break
+                    break
         print("Done!")
         
 
@@ -87,16 +87,6 @@ class DataService():
             newWs.cell(i, 2).value = entryList[i].transValue
 
 
-    def sumDept(self, dept, ws):
-        deptTotal = 0
-        for i in range(1, ws.max_row):
-            value = ws.cell(i, 2).value
-            if value == dept:
-                deptTotal += ws.cell(i, 7).value
-        print (str(deptTotal))
-        return deptTotal
-
-
     def populateMenu(self, list):
         options = []
         if (list.__len__() > 0):
@@ -105,12 +95,45 @@ class DataService():
         return options
 
 
+    ##########Calculation Functions##################
+    def sumDept(self, dept, ws):
+        deptTotal = 0
+        for i in range(1, ws.max_row+1):
+            value = ws.cell(i, 2).value
+            if value == dept:
+                deptTotal += ws.cell(i, 7).value
+        print (str(deptTotal))
+        return self.round_up(deptTotal)
+
+
     def sumByCat(self, cat, ws, dept):
         catTotal = 0
-        for i in range(1, ws.max_row):
+        for i in range(1, ws.max_row+1):
             value = ws.cell(i, 8).value
             deptValue = ws.cell(i,2).value
             if (value == cat) and (deptValue == dept):
                 catTotal += ws.cell(i, 7).value
         print (cat + " Total : " + str(catTotal))            
-        return catTotal
+        return self.round_up(catTotal)
+
+    def calcCatSums(self, dept, ws):
+        cats = []
+        for i in range(1, ws.max_row+1):
+            found = False
+            cat = ws.cell(i, 8).value
+            for item in cats:
+                if item == cat:
+                    found = True
+            if found == False:
+                cats.append(cat)
+        catTotals = []
+        for item in cats:
+            total = self.round_up(self.sumByCat(item, ws, dept))
+            if total > 0:
+                newItem = ListItem(total, item)
+                catTotals.append(newItem)
+        return catTotals
+
+    def round_up(self, n, decimals=2):
+        multiplier = 10 ** decimals
+        return math.ceil(n * multiplier) / multiplier
