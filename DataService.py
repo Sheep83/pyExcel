@@ -37,7 +37,7 @@ class DataService():
             cell = ws.cell(i, 3)
             for j in range(1, options.max_row+1):
                 cell2 = options.cell(j, 1)
-                if (cell.value == cell2.value):
+                if (int(cell.value) == int(cell2.value)):
                     ws.cell(i, 8).value = options.cell(j, 3).value
                     break
         print("Done!")

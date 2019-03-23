@@ -15,7 +15,8 @@ class PyExcel(tk.Tk):
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
-        self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
+        self.title_font = tkfont.Font(family='Arial', size=14, weight="bold", slant="italic")
+        self.heading_font = tkfont.Font(family='Arial', size=12)
         self.currentFile = None
         # path = 'C:\Dev\Python\pyExcel\files\optionsFile.xlsx'
         self.files = []
@@ -78,6 +79,7 @@ class PyExcel(tk.Tk):
         self.currentFile = self.FileService.loadFile()
         self.files.append(self.currentFile)
         self.getWorkbookInfo(self.currentFile)
+        self.DataService.categorise(self.currentFile["Sheet1"], self.optionsFile["ChartOfAccounts"])
 
 
     def getWorkbookInfo(self, wb):
