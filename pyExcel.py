@@ -23,7 +23,7 @@ class PyExcel(tk.Tk):
         self.FileService = FileService()
         # self.entryList = None
         # self.optionsFile = self.FileService.loadFile()
-        self.optionsFile = load_workbook('C:/Dev/Python/pyExcel/files/optionsFile.xlsx')
+        self.optionsFile = load_workbook('C:/Dev/files/optionsFile.xlsx')
         self.nominalList = None
         self.deptList = []
         self.selectedDept = StringVar()
