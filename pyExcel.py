@@ -18,12 +18,10 @@ class PyExcel(tk.Tk):
         self.title_font = tkfont.Font(family='Arial', size=14, weight="bold", slant="italic")
         self.heading_font = tkfont.Font(family='Arial', size=12)
         self.currentFile = None
-        # path = 'C:\Dev\Python\pyExcel\files\optionsFile.xlsx'
         self.files = []
         self.DataService = DataService()
         self.FileService = FileService()
         # self.entryList = None
-        # self.optionsFile = self.FileService.loadFile()
         self.optionsFile = load_workbook('C:/Dev/files/optionsFile.xlsx')
         self.nominalList = None
         self.deptList = []
